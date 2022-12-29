@@ -10,29 +10,68 @@ function App() {
       name:"Fight Back",
       artist:"Neffex",
       album:"IDK",
-      id:1
+      id:1,
+      
     },
     {
       name:"Learn To Meow",
       artist:"Tiktok",
       album:"Good tt songs",
-      id:2
+      id:2,
+      
     }
   ])
 
   const [playlists,setPlaylists]=React.useState([
     {
-      name:"Sad Songs",
-      artist:["We Dont Talk Anymore","Little Do You Know","If I Die Young"],
-      id:1
+      name:"We Dont Talk Anymore",
+      artist:"Charlie Puth",
+      album:"IDK",
+      id:3,
+      
     },
     {
-      name:"Best Nightcore ",
-      artist:["We Dont Talk Anymore","Little Do You Know","If I Die Young"],
-      id:2
+      name:"Xiao Xing Yun",
+      artist:"Hebe Tian",
+      album:"?",
+      id:4,
+      
     }
   ])
 
+  const[playlistName,setPlaylistName]=React.useState("Sad songs")
+
+  function changePlaylistName(e){
+    setPlaylistName(e.target.value)
+  }
+
+  function addSong(song){
+    //console.log(song)
+    setPlaylists([...playlists,song])
+    
+  }
+
+  function deleteSong(ID){
+    let newPlaylist=[]
+    
+    for(let i=0;i<playlists.length;i++){
+     
+      if(playlists[i].id!=ID){
+        console.log(playlists[i])
+        newPlaylist=[...newPlaylist,playlists[i]]
+        console.log(newPlaylist)
+      }
+    }
+    console.log(playlists)
+    setPlaylists(newPlaylist)
+    
+  }
+
+  React.useEffect(()=>{
+    console.log(playlists)
+  },[playlists])
+
+  
 
   return (
     <div>
@@ -40,8 +79,8 @@ function App() {
       <div className="App">
         <SearchBar/>
         <div className="App-playlist"> 
-        <SearchResults tracks={searchResults}/>
-        <Playlist tracks={playlists}/>
+        <SearchResults tracks={searchResults} removal={false} addSong={addSong} deleteSong={deleteSong}/>
+        <Playlist name={playlistName} tracks={playlists} changePlaylistName={changePlaylistName} removal={true} addSong={addSong} deleteSong={deleteSong}/>
         </div>
       </div>
     </div>

@@ -4,22 +4,33 @@ import React from 'react'
 export default function Track(props){
 
     const track=props.details
-    console.log(track)
     const name=track.name
     const artist=track.artist
+    const isRemoval=props.removal
+    const addSong=props.addSong
+    const id=props.details.id
+    const deleteSong=props.deleteSong
 
-    const[isRemoval,setIsRemoval]=React.useState(true)
+    
     const[buttonText,setButtonText]=React.useState("")
-
-    function renderAction(){
+    React.useEffect(()=>{
         if(isRemoval){
-            setButtonText("-")
+        setButtonText("-")
+    }
+    else{
+        setButtonText("+")
+    }},[])
+    
+    function handleClick(e,val,item){
+        if(item){
+           deleteSong(id)
         }
         else{
-            setButtonText("-")
-        }
+            
+            //console.log(val)
+            addSong(val)
 
-        setIsRemoval(prev=>!prev)
+        }
     }
 
     return(
@@ -28,7 +39,8 @@ export default function Track(props){
                 <h3>{name}</h3>
                 <p>{artist}</p>
             </div>
-            <button className="Track-action" onClick={renderAction}>{buttonText}</button>
+            <button className="Track-action" onClick={(e)=>{handleClick(e,track,isRemoval,id)}}
+            >{buttonText}</button>
         </div>
     )
 }

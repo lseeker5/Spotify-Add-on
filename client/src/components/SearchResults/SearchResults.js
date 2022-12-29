@@ -6,7 +6,7 @@ export default function SearchResults(props){
     return(
         <div className="SearchResults">
             <h2>Results</h2>
-            <TrackList tracks={tracks}/>
+            <TrackList tracks={tracks} removal={props.removal} addSong={props.addSong} deleteSong={props.deleteSong}/>
         </div>
     )
 }
