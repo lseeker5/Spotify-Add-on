@@ -8,7 +8,7 @@ export default function Playlist(props){
         <div className="Playlist">
             <input defaultValue={name} onChange={(e)=>{handleChange(e)}}/>
             <TrackList tracks={props.tracks} removal={props.removal} addSong={props.addSong} deleteSong={props.deleteSong}/>
-            <button className="Playlist-save">SAVE TO SPOTIFY</button>
+            <button className="Playlist-save" onClick={props.onSave}>SAVE TO SPOTIFY</button>
         </div>
     )
 }

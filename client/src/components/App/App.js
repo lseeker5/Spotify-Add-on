@@ -3,43 +3,14 @@ import Playlist from '../Playlist/Playlist';
 import SearchResults from '../SearchResults/SearchResults'
 import './App.css';
 import React from 'react'
+import Spotify from '../../util/Spotify';
 
 function App() {
-  const [searchResults,setSearchResults]=React.useState([
-    {
-      name:"Fight Back",
-      artist:"Neffex",
-      album:"IDK",
-      id:1,
-      
-    },
-    {
-      name:"Learn To Meow",
-      artist:"Tiktok",
-      album:"Good tt songs",
-      id:2,
-      
-    }
-  ])
+  const [searchResults,setSearchResults]=React.useState([])
 
-  const [playlists,setPlaylists]=React.useState([
-    {
-      name:"We Dont Talk Anymore",
-      artist:"Charlie Puth",
-      album:"IDK",
-      id:3,
-      
-    },
-    {
-      name:"Xiao Xing Yun",
-      artist:"Hebe Tian",
-      album:"?",
-      id:4,
-      
-    }
-  ])
+  const [playlists,setPlaylists]=React.useState([])
 
-  const[playlistName,setPlaylistName]=React.useState("Sad songs")
+  const[playlistName,setPlaylistName]=React.useState("New Playlist")
 
   function changePlaylistName(e){
     setPlaylistName(e.target.value)
@@ -56,31 +27,43 @@ function App() {
     
     for(let i=0;i<playlists.length;i++){
      
-      if(playlists[i].id!=ID){
+      if(playlists[i].id!==ID){
         console.log(playlists[i])
         newPlaylist=[...newPlaylist,playlists[i]]
-        console.log(newPlaylist)
+        //console.log(newPlaylist)
       }
     }
-    console.log(playlists)
+    //console.log(playlists)
     setPlaylists(newPlaylist)
     
   }
 
-  React.useEffect(()=>{
-    console.log(playlists)
-  },[playlists])
+  // React.useEffect(()=>{
+  //   console.log(playlists)
+  // },[playlists])
 
+  function savePlaylist(){
+    const trackURIs=playlists.map((track)=>{return track.uri})
+    Spotify.savePlaylist(playlistName,trackURIs)
+  }
+
+  function search(term){
+    Spotify.search(term).then(res=>setSearchResults(res)).then(()=>{
+      setPlaylistName("New Playlist")
+      setPlaylists([])
+    })
+    
+  }
   
 
   return (
     <div>
       <h1>Ja<span className="highlight">mmm</span>ing</h1>
       <div className="App">
-        <SearchBar/>
+        <SearchBar search={search}/>
         <div className="App-playlist"> 
         <SearchResults tracks={searchResults} removal={false} addSong={addSong} deleteSong={deleteSong}/>
-        <Playlist name={playlistName} tracks={playlists} changePlaylistName={changePlaylistName} removal={true} addSong={addSong} deleteSong={deleteSong}/>
+        <Playlist name={playlistName} tracks={playlists} changePlaylistName={changePlaylistName} removal={true} addSong={addSong} deleteSong={deleteSong} onSave={savePlaylist}/>
         </div>
       </div>
     </div>
