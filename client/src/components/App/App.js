@@ -44,14 +44,14 @@ function App() {
 
   function savePlaylist(){
     const trackURIs=playlists.map((track)=>{return track.uri})
-    Spotify.savePlaylist(playlistName,trackURIs)
-  }
-
-  function search(term){
-    Spotify.search(term).then(res=>setSearchResults(res)).then(()=>{
+    Spotify.savePlaylist(playlistName,trackURIs).then(()=>{
       setPlaylistName("New Playlist")
       setPlaylists([])
     })
+  }
+
+  function search(term){
+    Spotify.search(term).then(res=>setSearchResults(res))
     
   }
   
